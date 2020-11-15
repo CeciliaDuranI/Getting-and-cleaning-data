@@ -1,7 +1,30 @@
-## Codebook
-## Action performed on data and script
+## CodeBook
+## Getting and Cleaning Data Course Project
 
-##Download data, unzip it, read it and appropiately name each column
+The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis. You will be graded by your peers on a series of yes/no questions related to the project. You will be required to submit: 1) a tidy data set as described below, 2) a link to a Github repository with your script for performing the analysis, and 3) a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data called CodeBook.md. You should also include a README.md in the repo with your scripts. This repo explains how all of the scripts work and how they are connected.
+
+One of the most exciting areas in all of data science right now is wearable computing - see for example this article . Companies like Fitbit, Nike, and Jawbone Up are racing to develop the most advanced algorithms to attract new users. The data linked to from the course website represent data collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available at the site where the data was obtained:
+
+http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
+
+Here are the data for the project:
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+
+You should create one R script called run_analysis.R that does the following.
+
+1. Merges the training and the test sets to create one data set.
+
+2. Extracts only the measurements on the mean and standard deviation for each measurement.
+
+3. Uses descriptive activity names to name the activities in the data set
+
+4. Appropriately labels the data set with descriptive variable names.
+
+5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+
+
+## Download data from the URL provide in the project, unzip it and then read the relevant data for the project (train and test data)
 
 url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 
@@ -17,6 +40,8 @@ testset <- read.table("./UCI HAR Dataset/test/X_test.txt")
 testlabel <- read.csv("./UCI HAR Dataset/test/y_test.txt", header = FALSE, sep = " ")
 testsubject <- read.csv("./UCI HAR Dataset/test/subject_test.txt",header = FALSE, sep = " ")
 
+## Change variable names in order to make them understandable and possible to merge
+
 variables <- read.csv("./UCI HAR Dataset/features.txt",header = FALSE, sep = " ")
 
 colnames(trainingset) <- variables[,2]
@@ -31,7 +56,7 @@ colnames(testsubject) <- "subject"
 
 colnames(trainsubject) <- "subject"
 
-##Merges the Training and Testing Sets into 1 data set called data.all
+## 1. Merges the Training and Testing Sets into one data set called data.all. This is made by first binding by column different files from test and from training set, and then binding by row those two files (test and training)
 
 test <- cbind(testset,testlabel,testsubject)
 
@@ -39,7 +64,7 @@ training <- cbind(trainingset,traininglabels,trainsubject)
 
 data.all <- rbind(training,test)
 
-##Extracts only the measurements on the mean and standard deviation for each measurement.
+## 2. Extracts only the measurements on the mean and standard deviation for each measurement. For this I use regular expression to find "mean or std" on column names. Then I select columns with information about activity and subject.
 
 prueba <- data.all[,grepl("mean|std", colnames(data.all))]
 
@@ -50,27 +75,45 @@ pruebaasc <- data.all %>%
 
 measuresmeanstd <- cbind(prueba,pruebaasc)
 
-##Uses descriptive activity names to name the activities in the data set
+## 3. Uses descriptive activity names to name the activities in the data set. I use the information on "activity_labels.txt" to substitute with regular expressions the number in activity column
 
 activitylabels <- read.csv("./UCI HAR Dataset/activity_labels.txt",header = FALSE, sep = " ")
 
 measuresmeanstd$activity <- gsub(1,"WALKING",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(2,"WALKING_UPSTAIRS",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(3,"WALKING_DOWNSTAIRS",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(4,"SITTING",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(5,"STANDING",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(6,"LAYING",measuresmeanstd$activity)
 
-##Appropriately labels the data set with descriptive variable names
+## 4. Appropriately labels the data set with descriptive variable names. I change variables names that were not clear (as t,f, Acc, Gyro and Mag) to have full names variable. 
 
 colnames(measuresmeanstd) <- sub("^t","time",colnames(measuresmeanstd))
+
 colnames(measuresmeanstd) <- sub("^f","frequency",colnames(measuresmeanstd))
+
 colnames(measuresmeanstd) <- sub("Acc", "Acceleretion",colnames(measuresmeanstd))
+
 colnames(measuresmeanstd) <- sub("Gyro", "Gyroscope",colnames(measuresmeanstd))
+
 colnames(measuresmeanstd) <- sub("Mag", "Magnitude",colnames(measuresmeanstd))
 
-##From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject
+## 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject. I group information by activity and subject and then extract the mean for each variable. The resulting file "tidy.data" has 180 observations for 81 variables.
 
 tidy.data <- measuresmeanstd %>%
   group_by(activity,subject) %>%
   summarise_all(mean)
+
+## 5. File tidy.data
+
+Main variables
+
+Column name | Description| Pretty
+--- | --- | ---
+*Still* | `renders` | **nicely**
+1 | 2 | 3
