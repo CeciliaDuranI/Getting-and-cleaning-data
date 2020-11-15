@@ -111,9 +111,13 @@ tidy.data <- measuresmeanstd %>%
 
 ## 5. File tidy.data
 
-Main variables
+tidy.data is a dataframe including the mean for each set of subject and activity of variables that inform the mean and standard deviation on test and training dataframes. It results on a data frame of 81 variables and 180 observations
 
-Column name | Description| Pretty
+*Main variables*
+
+Column name | Type| Description
 --- | --- | ---
-*Still* | `renders` | **nicely**
-1 | 2 | 3
+activity| character |6 different types of activities
+subject | integer | subject 1:30
+timeBodyAcceleretion-mean()-X | numeric | Is the mean of the timeBodyAcceleretion X column for each subject/activity pair
+YYY -mean () | numeric | Is the mean of YYY column for each subject/activity pair
