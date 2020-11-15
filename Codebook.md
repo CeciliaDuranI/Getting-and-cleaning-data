@@ -113,6 +113,28 @@ tidy.data <- measuresmeanstd %>%
 
 tidy.data is a dataframe including the mean for each set of subject and activity of variables that inform the mean and standard deviation on test and training dataframes. It results on a data frame of 81 variables and 180 observations
 
+It includes the mean and standard deviation of the especified variables for each pattern "-XYZ": 3-axial signals in the X, Y and Z directions.
+
+Variable|
+--- | 
+tBodyAcc-XYZ|
+tGravityAcc-XYZ|
+tBodyAccJerk-XYZ|
+tBodyGyro-XYZ|
+tBodyGyroJerk-XYZ|
+tBodyAccMag|
+tGravityAccMag|
+tBodyAccJerkMag|
+tBodyGyroMag|
+tBodyGyroJerkMag|
+fBodyAcc-XYZ|
+fBodyAccJerk-XYZ|
+fBodyGyro-XYZ|
+fBodyAccMag|
+fBodyAccJerkMag|
+fBodyGyroMag|
+fBodyGyroJerkMag|
+
 *Main variables*
 
 Column name | Type| Description
