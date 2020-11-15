@@ -65,18 +65,27 @@ measuresmeanstd <- cbind(prueba,pruebaasc)
 activitylabels <- read.csv("./UCI HAR Dataset/activity_labels.txt",header = FALSE, sep = " ")
 
 measuresmeanstd$activity <- gsub(1,"WALKING",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(2,"WALKING_UPSTAIRS",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(3,"WALKING_DOWNSTAIRS",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(4,"SITTING",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(5,"STANDING",measuresmeanstd$activity)
+
 measuresmeanstd$activity <- gsub(6,"LAYING",measuresmeanstd$activity)
 
 ## 4. Appropriately labels the data set with descriptive variable names. I change variables names that were not clear (as t,f, Acc, Gyro and Mag) to have full names variable. 
 
 colnames(measuresmeanstd) <- sub("^t","time",colnames(measuresmeanstd))
+
 colnames(measuresmeanstd) <- sub("^f","frequency",colnames(measuresmeanstd))
+
 colnames(measuresmeanstd) <- sub("Acc", "Acceleretion",colnames(measuresmeanstd))
+
 colnames(measuresmeanstd) <- sub("Gyro", "Gyroscope",colnames(measuresmeanstd))
+
 colnames(measuresmeanstd) <- sub("Mag", "Magnitude",colnames(measuresmeanstd))
 
 ## 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject. I group information by activity and subject and then extract the mean for each variable. The resulting file "tidy.data" has 180 observations for 81 variables.
